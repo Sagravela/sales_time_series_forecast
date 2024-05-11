@@ -15,7 +15,7 @@ price tier designation (e.g., upscale vs. value).
 - Product information, including UPC, size, and description.
 ---
 ### Dataset details
-![dataset_details](https://github.com/Sagravela/dunnhumby_Breakfast-at-the-Frat/assets/114028927/952ad897-9ad0-4b0c-a8c8-7969631c4bb3)
+![dataset_details](/data/data_table.png)
 ---
 ## transactions
 **Description**: This table contains 156 weeks of Mouthwash, 
