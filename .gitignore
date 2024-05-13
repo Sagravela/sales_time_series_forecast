@@ -1,4 +1,2 @@
 model/
-forecast/
 *.pdf
-.parquet

@@ -1,14 +1,27 @@
 ### ANALYSIS
 
-## DEPENDENCIES AND UTILS
-source("utils.R")
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+library(skimr)
+
+# Load and save data
+library(arrow)
+
+# Visualization
 library(ggplot2)
 library(plotly)
+library(GGally)
+
+# Miscelaneous
+library(glue)
+
 
 ## LOAD DATA
-transactions <- arrow::read_parquet("data/transactions.parquet")
-store <- arrow::read_parquet("data/store.parquet")
-products <- arrow::read_parquet("data/products.parquet")
+transactions <- read_parquet("data/transactions.parquet")
+store <- read_parquet("data/store.parquet")
+products <- read_parquet("data/products.parquet")
 
 # --------------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
@@ -94,6 +107,7 @@ ts <- transactions |>
   group_by(week, category) |>
   summarise(
     units = sum(units, na.rm = TRUE),
+    visits = sum(visits, na.rm = TRUE),
     base_price = mean(base_price, na.rm = TRUE),
     feature = ceiling(mean(feature, na.rm = TRUE)),
     display = ceiling(mean(display, na.rm = TRUE)),
@@ -135,7 +149,7 @@ product_corr <- function(selected_cat) {
       -category,
       -week
     ) |>
-    GGally::ggpairs() +
+    ggpairs() +
     labs(title = glue("Product: {category}"))
 }
 

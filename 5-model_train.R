@@ -1,7 +1,25 @@
 ### MODEL TRAINING
 
-## DEPENDENCIES AND UTILS
-source("utils.R")
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+library(purrr)
+
+# TS model
+library(fable)
+library(fabletools)
+library(feasts)
+
+# Load and save data
+library(arrow)
+
+# Multiprocess
+library(future)
+library(furrr)
+
+# Miscelaneous
+library(progressr)
 
 ## LOAD DATA
 train <- read_parquet("data/train.parquet")
@@ -9,7 +27,7 @@ test <- read_parquet("data/test.parquet")
 transactions_final <- read_parquet("data/transactions_final.parquet")
 
 # Set up future plan
-plan(multisession(workers = 8))
+# plan(multisession(workers = 8))
 
 # Set up progress bars
 handlers(global = TRUE)
@@ -52,7 +70,7 @@ train_arima <- function(ds) {
     model(
       !!!model_set
     )
-  bar()
+  cat("\n", paste(rep("-", 70), collapse = ""), "\n")
 
   fit |>
     mutate(arima = if_else(
@@ -103,7 +121,7 @@ saveRDS(fit, "model/fit_train.rds")
 
 # Remove objects to free memory
 rm(fit_arima, train_imp, fit_stl, fit)
-bar()
+cat("\n", paste(rep("-", 70), collapse = ""), "\n")
 
 # --------------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
@@ -120,7 +138,7 @@ fit <- bind_cols(fit_arima, fit_stl["stl"])
 
 # Save mable
 saveRDS(fit, "model/fit.rds")
-bar()
+cat("\n", paste(rep("-", 70), collapse = ""), "\n")
 
 # --------------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
@@ -128,7 +146,7 @@ bar()
 # RESIDUALS
 fit |>
   augment() |>
-  write_parquet("model/residuals.parquet")
+  write_parquet("shiny_app/residuals.parquet")
 
 # Close multisession
 plan("sequential")

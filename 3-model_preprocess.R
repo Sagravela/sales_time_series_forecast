@@ -1,7 +1,23 @@
 ### MODEL PREPROCESSING
 
-## DEPENDENCIES AND UTILS
-source("utils.R")
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+
+# TS model
+library(fable)
+library(fabletools)
+
+# Load and save data
+library(arrow)
+
+# Visualization
+library(ggplot2)
+
+# Miscelaneous
+library(progressr)
+
 
 ## LOAD DATA
 transactions <- read_parquet("data/transactions.parquet")

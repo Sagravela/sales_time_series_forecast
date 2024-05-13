@@ -1,4 +1,4 @@
-name: R
+name: r-forecast
 channels:
   - defaults
   - conda-forge
@@ -26,4 +26,3 @@ dependencies:
   - r-ggally
   - r-urca
   - r-jsonlite
-prefix: /home/sagravela/miniconda3/envs/R

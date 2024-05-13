@@ -1,7 +1,18 @@
 ### DATA LOAD AND PREPARATION
 
-## DEPENDENCIES AND UTILS
-source("utils.R")
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+
+# Load and save data
+library(arrow)
+library(readxl)
+
+# Miscelaneous
+library(janitor)
+library(measurements)
+
 
 ## LOAD DATA
 # Load raw data from Excel and clean their column names
@@ -67,7 +78,7 @@ transactions <- transactions |>
 converter <- function(x) {
   split_values <- unlist(strsplit(x, " "))
   unit <- tolower(split_values[2])
-  result <- measurements::conv_unit(
+  result <- conv_unit(
     as.numeric(split_values[1]),
     ifelse(unit == "lt", "l",
       ifelse(unit == "ct", "carat", unit)

@@ -1,7 +1,28 @@
 ### MODEL VALIDATION
 
-## DEPENDENCIES AND UTILS
-source("utils.R")
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+library(purrr)
+
+# TS model
+library(fable)
+# Install fable.prophet from CRAN with install.packages("fable.prophet"),
+# it doesn't available in Conda Environment at the moment
+library(fable.prophet)
+library(fabletools)
+library(feasts)
+
+# Load and save data
+library(arrow)
+
+# Visualization
+library(ggplot2)
+
+# Miscelaneous
+library(glue)
+library(progressr)
 
 ## LOAD DATA
 sample_train <- read_parquet("data/sample_train.parquet")
@@ -67,10 +88,6 @@ fit <- sample_train |>
   model(
     !!!models
   )
-# Save model.
-cat("++ SAVING ++")
-saveRDS(fit, "model/fit_val.rds")
-# fit <- readRDS("model/fit_val.rds")
 
 # I will select one of the ARIMA models which minimizes AICc in the training set.
 val_aicc <- fit |>
@@ -169,10 +186,6 @@ get_forecast <- function(batchs, ds) {
 
 fc <- get_forecast(batchs, sample_val) |>
   as_tsibble()
-
-# Save forecasts as checkpoint
-fc |>
-  saveRDS(glue("forecast/fc_val.rds"))
 
 # Calculate RMSE
 rmse_fc <- fc |>

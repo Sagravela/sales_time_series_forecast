@@ -1,4 +1,22 @@
-source("utils.R")
+### MODEL FORECASTING
+
+## DEPENDENCIES
+# General
+library(tidyverse)
+library(tsibble)
+library(purrr)
+
+# TS model
+library(fable)
+library(fabletools)
+library(feasts)
+
+# Load and save data
+library(arrow)
+
+# Miscelaneous
+library(progressr)
+library(glue)
 
 ## LOAD DATA
 train <- read_parquet("data/train.parquet")
@@ -98,9 +116,9 @@ cat("++ TRAIN/TEST DATASET ++\n")
 cat("-- FORECASTING --\n")
 batchs <- seq(1, nrow(fit), by = batch_size)
 
-# get_forecast(batchs, test) |>
-add_ci() |>
-  write_parquet("forecast/fc_train.parquet")
+get_forecast(batchs, test) |>
+  add_ci() |>
+  write_parquet("shiny_app/fc_train.parquet")
 
 # Remove objects to free memory
 rm(fit)
@@ -123,7 +141,7 @@ fc_stl <- get_forecast(batchs, new_data(transactions_final, n = 2))
 
 fc_stl |>
   add_ci() |>
-  write_parquet("forecast/fc_stl.parquet")
+  write_parquet("shiny_app/fc_stl.parquet")
 
 # Remove objects to free memory
 rm(fit, fc_stl)
@@ -176,7 +194,7 @@ fc_arima <- map_dfr(
       mutate(fc = i)
 
     # Save checkpoint just in case
-    # saveRDS(fc, glue("forecast/fc_arima_{i}.rds"))
+    # saveRDS(fc, glue("shiny_app/fc_arima_{i}.rds"))
 
     # Return as tibble to avoid problems binding later
     return(as_tibble(fc))
@@ -187,4 +205,4 @@ fc_arima <- map_dfr(
 fc_arima |>
   as_tsibble(index = week, key = c(upc_id, store_id, .model, fc)) |>
   add_ci() |>
-  write_parquet("forecast/fc_arima.parquet")
+  write_parquet("shiny_app/fc_arima.parquet")
