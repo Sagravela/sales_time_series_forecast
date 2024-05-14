@@ -21,15 +21,15 @@ library(shinycssloaders)
 library(DT)
 
 ## Load data
-transactions_final <- read_parquet("transactions_final.parquet")
-store <- read_parquet("store.parquet")
-products <- read_parquet("products.parquet")
+transactions_final <- read_parquet("data/transactions_final.parquet")
+store <- read_parquet("data/store.parquet")
+products <- read_parquet("data/products.parquet")
 # Forecasting parquets
-fc_train <- read_parquet("fc_train.parquet") |> mutate(.model = toupper(.model))
-fc_arima <- read_parquet("fc_arima.parquet") |> mutate(.model = toupper(.model))
-fc_stl <- read_parquet("fc_stl.parquet") |> mutate(.model = toupper(.model))
+fc_train <- read_parquet("data/fc_train.parquet") |> mutate(.model = toupper(.model))
+fc_arima <- read_parquet("data/fc_arima.parquet") |> mutate(.model = toupper(.model))
+fc_stl <- read_parquet("data/fc_stl.parquet") |> mutate(.model = toupper(.model))
 # Residuals
-res <- read_parquet("residuals.parquet") |> mutate(.model = toupper(.model))
+res <- read_parquet("data/residuals.parquet") |> mutate(.model = toupper(.model))
 
 # Spinner type
 options("spinner.type" = 8)
