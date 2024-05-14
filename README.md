@@ -15,7 +15,7 @@
 - **Feature Correlation**: Displays correlations between features and sales, aiding in understanding the factors influencing sales.
 
 ### Getting Started
-Shiny App can be run without any setup, in [shinyapp.io](https://sagravela.shinyapps.io/shiny_ts/). To reproduce the results locally, clone the repository and create an environment from the `environment.yml` file with `conda create -f environment.yml`, then make a `model/` folder in the workspace root to save the trained models. Finally, run each script in order.
+Shiny App can be run without any setup, click on [shinyapp.io](https://sagravela.shinyapps.io/shiny_app/). To reproduce the results locally, clone the repository and create an environment from the `environment.yml` file with `conda create -f environment.yml`, then make a `model/` folder in the workspace root to save the trained models. Finally, run each script in order.
 
 ---
 ### Dataset Overview: Breakfast at the Frat, a Time Series Analysis
